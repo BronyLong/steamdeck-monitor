@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История измерений</title>
+    <link rel="stylesheet" href="../styles/reset.css" />
+    <link rel="stylesheet" href="../styles/variables.css" />
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/history.css" />
+</head>
+<body>
+    <header class="site-header">
+        <p class="site-header__brand">Steam Deck Monitor</p>
+        <nav class="site-header__navigation" aria-label="Основная навигация">
+            <ul class="site-header__links">
+                <li class="site-header__item">
+                    <a class="site-header__link" href="current.html">Текущие показатели</a>
+                </li>
+                <li class="site-header__item">
+                    <a class="site-header__link" href="history.html" aria-current="page">История</a>
+                </li>
+            </ul>
+        </nav>
+        <a class="site-header__logout" href="login.html">Выйти</a>
+    </header>
+    <main class="workspace history">
+        <h1 class="history__title">История измерений</h1>
+        <form class="history__filters">
+            <fieldset class="history-filters__group">
+                <legend class="history-filters__legend">Показатель</legend>
+                <label class="field__label" for="metric">Метрика</label>
+                <div class="field__select">
+                    <select class="field__control" id="metric" name="metric">
+                        <option value="cpu_percent">Загрузка ЦПУ (%)</option>
+                        <option value="cpu_temperature_c">Температура ЦПУ (°C)</option>
+                        <option value="cpu_frequency_mhz">Частота ЦПУ (MHz)</option>
+                        <option value="gpu_percent">Загрузка ГПУ (%)</option>
+                        <option value="gpu_temperature_c">Температура ГПУ (°C)</option>
+                        <option value="gpu_frequency_mhz">Частота ГПУ (MHz)</option>
+                        <option value="disk_busy_percent">Активность накопителя (%)</option>
+                        <option value="disk_read_mib_s">Скорость чтения (MiB/s)</option>
+                        <option value="disk_write_mib_s">Скорость записи (MiB/s)</option>
+                        <option value="disk_used_percent">Занятое место на накопителе (%)</option>
+                        <option value="memory_percent">Использование ОЗУ (%)</option>
+                        <option value="battery_percent">Заряд батареи (%)</option>
+                        <option value="uptime_s">Время работы системы (с)</option>
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset class="history-filters__group">
+                <legend class="history-filters__legend">Период времени</legend>
+                <label class="field__label" for="interval">Интервал</label>
+                <div class="field__select">
+                    <select class="field__control" id="interval" name="interval" aria-describedby="period-help">
+                        <option value="1">1 минута</option>
+                        <option value="5">5 минут</option>
+                        <option value="30">30 минут</option>
+                        <option value="60">60 минут</option>
+                        <option value="custom">Произвольный диапазон</option>
+                    </select>
+                </div>
+                <p class="history-filters__help" id="period-help">Для произвольного диапазона выберите соответствующий пункт и укажите дату и время начала и окончания.</p>
+                <div class="history-filters__dates">
+                    <div class="history-filters__date-field">
+                        <label class="field__label" for="start">Дата и время начала</label>
+                        <input class="field__control history-filters__date" aria-describedby="period-help" id="start" name="start" type="datetime-local">
+                    </div>
+                    <div class="history-filters__date-field">
+                        <label class="field__label" for="end">Дата и время окончания</label>
+                        <input class="field__control history-filters__date" aria-describedby="period-help" id="end" name="end" type="datetime-local">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="history-filters__group history-filters__group--signals">
+                <legend class="history-filters__legend">Отображение данных</legend>
+                <label class="history-filters__signal" for="raw">
+                    <input class="history-filters__checkbox" id="raw" name="raw" type="checkbox" value="1">
+                    RAW — исходные данные
+                </label>
+                <label class="history-filters__signal" for="sma">
+                    <input class="history-filters__checkbox history-filters__checkbox--processed" id="sma" name="sma" type="checkbox" value="1">
+                    SMA — простое скользящее среднее
+                </label>
+            </fieldset>
+        </form>
+        <figure class="history-chart" aria-labelledby="history-caption">
+            <div class="history-chart__legend" aria-label="Обозначения сигналов">
+                <span class="history-chart__signal">RAW</span>
+                <span class="history-chart__signal history-chart__signal--processed">SMA</span>
+            </div>
+            <!-- Контейнер для будущего динамического графика. -->
+            <div class="history-chart__plot">
+                <p class="history-chart__empty">Нет данных для отображения</p>
+            </div>
+            <figcaption class="history-chart__caption" id="history-caption">График истории измерений.</figcaption>
+        </figure>
+    </main>
+</body>
+</html>

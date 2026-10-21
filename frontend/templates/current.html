@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Текущие показатели</title>
+        <link rel="stylesheet" href="../styles/reset.css" />
+        <link rel="stylesheet" href="../styles/variables.css" />
+        <link rel="stylesheet" href="../styles/global.css" />
+        <link rel="stylesheet" href="../styles/current.css" />
+    </head>
+    <body>
+        <header class="site-header">
+            <h1 class="site-header__brand">Steam Deck Monitor</h1>
+            <nav class="site-header__navigation" aria-label="Основная навигация">
+                <ul class="site-header__links">
+                    <li class="site-header__item">
+                        <a class="site-header__link" href="current.html" aria-current="page">Текущие показатели</a>
+                    </li>
+                    <li class="site-header__item">
+                        <a class="site-header__link" href="history.html">История</a>
+                    </li>
+                </ul>
+            </nav>
+            <a class="site-header__logout" href="login.html">Выйти</a>
+        </header>
+        <main class="workspace monitor">
+            <div class="monitor__sections">
+                <section class="metric-section">
+                    <div class="metric-section__header">
+                        <h2>Показатели ЦПУ</h2>
+                    </div>
+                    <div class="metric-section__grid">
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Загрузка ЦПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Загрузка ЦПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Температура ЦПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">°C</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Температура ЦПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Частота ЦПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">MHz</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Частота ЦПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+                    </div>
+                </section>
+                <section class="metric-section">
+                    <div class="metric-section__header">
+                        <h2>Показатели ГПУ</h2>
+                    </div>
+                    <div class="metric-section__grid">
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Загрузка ГПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Загрузка ГПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Температура ГПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">°C</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Температура ГПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Частота ГПУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">MHz</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Частота ГПУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="metric-section">
+                    <div class="metric-section__header">
+                        <h2>Показатели накопителя</h2>
+                    </div>
+                    <div class="metric-section__grid metric-section__grid--storage">
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Активность накопителя</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Активность накопителя: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Скорость чтения</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">MiB/s</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Скорость чтения: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Скорость записи</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">MiB/s</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Скорость записи: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Занятое место на накопителе</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Занятое место на накопителе: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="metric-section">
+                    <div class="metric-section__header">
+                        <h2>Остальные показатели</h2>
+                    </div>
+                    <div class="metric-section__grid">
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Использование ОЗУ</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Использование ОЗУ: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Заряд батареи</h3>
+                                <p class="metric-card__value">65 <span class="metric-card__unit">%</span></p>
+                            </header>
+                            <div class="metric-card__indicator" aria-hidden="true">
+                                <!-- Контейнер для будущего индикатора; значение указано выше. -->
+                            </div>
+                            <figure class="metric-card__chart">
+                                <!-- Контейнер для будущего динамического графика. -->
+                                <figcaption class="metric-card__caption">Заряд батареи: график пока недоступен.</figcaption>
+                            </figure>
+                        </article>
+
+                        <article class="metric-card">
+                            <header class="metric-card__header">
+                                <h3 class="metric-card__name">Время работы системы</h3>
+                            </header>
+                            <p class="metric-card__value metric-card__value--uptime"><time datetime="PT4H20M21S">4 ч 20 мин 21 с</time></p>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

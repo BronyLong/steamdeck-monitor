@@ -1,0 +1,185 @@
+body {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-interface);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height);
+    overflow-wrap: anywhere;
+}
+
+h1 {
+    font-size: var(--font-size-title);
+}
+
+h2 {
+    font-size: var(--font-size-medium);
+}
+
+h3 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+}
+
+a {
+    color: var(--color-accent);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: var(--border-width-strong) solid var(--color-accent);
+    outline-offset: var(--border-width-strong);
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-6);
+    min-height: var(--header-height);
+    padding: 0 var(--spacing-6);
+    background: var(--color-surface);
+    border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.site-header__brand {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height);
+}
+
+.site-header__navigation {
+    display: flex;
+    align-self: stretch;
+}
+
+.site-header__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    padding: 0;
+    list-style: none;
+}
+
+.site-header__item {
+    display: flex;
+}
+
+.site-header__link,
+.site-header__logout {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-height);
+    padding: var(--spacing-2) var(--spacing-3);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+}
+
+.site-header__link {
+    border-bottom: var(--border-width-strong) solid transparent;
+}
+
+.site-header__link[aria-current="page"] {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+}
+
+.site-header__logout {
+    margin-left: auto;
+    border: var(--border-width) solid var(--color-border-control);
+    border-radius: var(--border-radius);
+}
+
+.site-header__link:hover,
+.site-header__logout:hover {
+    color: var(--color-accent-hover);
+}
+
+.workspace {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: var(--spacing-6);
+}
+
+.field__label {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+}
+
+.field__control {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--control-height);
+    padding: var(--spacing-2) var(--spacing-3);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border-control);
+    border-radius: var(--border-radius);
+}
+
+.field__select {
+    min-width: 0;
+    padding-right: var(--spacing-3);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border-control);
+    border-radius: var(--border-radius);
+}
+
+.field__select select {
+    min-height: calc(var(--control-height) - var(--border-width) * 2);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.field__select:focus-within {
+    outline: var(--border-width-strong) solid var(--color-accent);
+    outline-offset: var(--border-width-strong);
+}
+
+.field__select select:focus-visible {
+    outline: none;
+}
+
+.field__control::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
+}
+
+.button {
+    min-height: var(--control-height);
+    padding: var(--spacing-2) var(--spacing-4);
+    border: 0;
+    border-radius: var(--border-radius);
+    background: var(--color-accent);
+    color: var(--color-surface);
+    font-weight: var(--font-weight-semibold);
+}
+
+.button:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+}
+
+.button:disabled,
+.field__control:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .site-header {
+        gap: var(--spacing-2) var(--spacing-4);
+        padding: var(--spacing-3) var(--spacing-4) 0;
+    }
+
+    .site-header__navigation {
+        order: 1;
+        width: 100%;
+    }
+
+    .workspace {
+        padding: var(--spacing-4) var(--spacing-4);
+    }
+}
