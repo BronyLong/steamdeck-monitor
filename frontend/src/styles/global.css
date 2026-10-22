@@ -1,0 +1,14 @@
+@layer base {
+    body {
+        background: var(--color-background);
+        color: var(--color-text-primary);
+        font-family: var(--font-interface);
+        font-size: var(--text-base);
+        line-height: var(--leading-interface);
+        overflow-wrap: anywhere;
+    }
+
+    option {
+        padding: revert;
+    }
+}
