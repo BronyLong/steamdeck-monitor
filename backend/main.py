@@ -1,3 +1,4 @@
+
 """API демонстрационного мониторинга Steam Deck."""
 
 import asyncio
@@ -6,8 +7,9 @@ from collections import deque
 from contextlib import asynccontextmanager, suppress
 from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query
 
+from auth import require_user, router as auth_router
 from collector import UNITS, collect_demo
 from processing import validate_metrics, average_buffer
 
@@ -18,8 +20,8 @@ WINDOW = 5
 # Последние пять отсчётов для вычисления SMA.
 buffer = deque(maxlen=WINDOW)
 
-# История последних 3600 отсчётов в оперативной памяти.
-history = deque(maxlen=3600)
+# Полная история измерений в оперативной памяти.
+history = deque()
 
 latest = None
 
@@ -89,6 +91,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(auth_router)
 
 
 @app.get("/api/health")
@@ -96,12 +99,12 @@ def health():
     return {"status": "ok", "source": "demo"}
 
 
-@app.get("/api/metrics")
+@app.get("/api/metrics", dependencies=[Depends(require_user)])
 def get_metrics():
     return {"metrics": UNITS}
 
 
-@app.get("/api/metrics/current")
+@app.get("/api/metrics/current", dependencies=[Depends(require_user)])
 def get_current():
     if latest is None:
         raise HTTPException(503, "Данные ещё не получены")
@@ -109,27 +112,74 @@ def get_current():
     return latest
 
 
-@app.get("/api/metrics/history")
+@app.get("/api/metrics/history", dependencies=[Depends(require_user)])
 def get_history(
     metric: str,
-    limit: int = Query(default=60, ge=1, le=3600),
+    limit: int | None = Query(default=None, ge=1),
+    start: datetime | None = Query(default=None),
+    end: datetime | None = Query(default=None),
 ):
+    """
+    Получение истории выбранной метрики.
+
+    metric - код метрики.
+    limit - максимальное количество последних записей.
+    start - начало периода с указанием часового пояса.
+    end - конец периода с указанием часового пояса.
+
+    Если параметры фильтрации отсутствуют,
+    возвращается вся накопленная история.
+    """
+
+    # Проверка существования метрики.
     if metric not in UNITS:
         raise HTTPException(400, "Неизвестная метрика")
 
-    points = list(history)[-limit:]
+    # Проверка часового пояса.
+    if start is not None and start.utcoffset() is None:
+        raise HTTPException(
+            400, "Укажите часовой пояс для start"
+        )
+
+    if end is not None and end.utcoffset() is None:
+        raise HTTPException(
+            400, "Укажите часовой пояс для end"
+        )
+
+    # Проверка порядка дат.
+    if start is not None and end is not None and start > end:
+        raise HTTPException(
+            400, "Начало периода позже окончания"
+        )
+
+    points = []
+
+    # Отбор измерений за указанный период.
+    for point in list(history):
+        measured_at = datetime.fromisoformat(
+            point["measured_at"]
+        )
+
+        if start is not None and measured_at < start:
+            continue
+
+        if end is not None and measured_at > end:
+            continue
+
+        points.append({
+            "measured_at": point["measured_at"],
+            "elapsed_s": point["elapsed_s"],
+            "raw": point["raw"][metric],
+            "processed": point["processed"][metric],
+            "quality": point["quality"][metric],
+        })
+
+    # Ограничение количества результатов, если задан limit.
+    if limit is not None:
+        points = points[-limit:]
 
     return {
         "metric": metric,
         "unit": UNITS[metric],
-        "points": [
-            {
-                "measured_at": point["measured_at"],
-                "elapsed_s": point["elapsed_s"],
-                "raw": point["raw"][metric],
-                "processed": point["processed"][metric],
-                "quality": point["quality"][metric],
-            }
-            for point in points
-        ],
+        "points": points,
     }
