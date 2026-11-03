@@ -1,24 +1,25 @@
 
-"""API демонстрационного мониторинга Steam Deck."""
+"""API мониторинга аппаратных ресурсов Steam Deck."""
 
 import asyncio
+import logging
+import os
+import platform
 import time
 from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager, suppress
 from datetime import datetime, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 
 from auth import require_user, router as auth_router
-from collector import UNITS, collect_demo
+from collector import UNITS, collect_metrics, get_disk_device
 from processing import validate_metrics, average_buffer
 
 
 INTERVAL = 1.0
 WINDOW = 5
-
-# Последние пять отсчётов для вычисления SMA.
-buffer = deque(maxlen=WINDOW)
 
 # Полная история измерений в оперативной памяти.
 history = deque()
@@ -26,10 +27,15 @@ history = deque()
 latest = None
 
 
-async def monitor():
-    """Периодически получает и обрабатывает демонстрационные данные."""
+async def monitor(executor, disk_path, disk_device):
+    """Собирает реальные показатели, сохраняя состояние между опросами."""
     global latest
 
+    latest = None
+    history.clear()
+    buffer = deque(maxlen=WINDOW)
+    disk_state = {}
+    loop = asyncio.get_running_loop()
     start = time.monotonic()
     next_tick = start
     sequence = 0
@@ -42,8 +48,14 @@ async def monitor():
             timespec="milliseconds"
         )
 
-        # Получение демонстрационных показаний.
-        metrics = collect_demo(elapsed)
+        # Один выделенный поток сохраняет базу psutil.cpu_percent между
+        # вызовами и не блокирует API при чтении системных файлов.
+        metrics = await loop.run_in_executor(
+            executor, collect_metrics, disk_path, disk_state, disk_device,
+        )
+        if sequence == 0:
+            # Первый опрос задаёт базу, но ещё не измеряет загрузку CPU.
+            metrics["cpu_percent"] = None
 
         # Проверка корректности.
         raw, quality = validate_metrics(metrics)
@@ -59,7 +71,7 @@ async def monitor():
             "sequence": sequence,
             "measured_at": timestamp,
             "elapsed_s": elapsed,
-            "source": "demo",
+            "source": "linux",
             "raw": raw,
             "processed": processed,
             "quality": quality,
@@ -80,14 +92,25 @@ async def monitor():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    task = asyncio.create_task(monitor())
+    if platform.system() != "Linux":
+        raise RuntimeError("Для аппаратного мониторинга запустите backend на Steam Deck с Linux")
 
-    try:
-        yield
-    finally:
-        task.cancel()
-        with suppress(asyncio.CancelledError):
-            await task
+    disk_path = os.environ.get("STEAMDECK_DISK_PATH", "/home")
+    disk_device = os.environ.get("STEAMDECK_DISK_DEVICE") or get_disk_device(disk_path)
+    if disk_device is None:
+        logging.getLogger(__name__).warning(
+            "Не удалось определить накопитель для %s; при необходимости "
+            "задайте STEAMDECK_DISK_DEVICE (например, nvme0n1)", disk_path,
+        )
+
+    with ThreadPoolExecutor(max_workers=1, thread_name_prefix="steamdeck-monitor") as executor:
+        task = asyncio.create_task(monitor(executor, disk_path, disk_device))
+        try:
+            yield
+        finally:
+            task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
 
 
 app = FastAPI(lifespan=lifespan)
@@ -96,7 +119,7 @@ app.include_router(auth_router)
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "source": "demo"}
+    return {"status": "ok", "source": "linux"}
 
 
 @app.get("/api/metrics", dependencies=[Depends(require_user)])

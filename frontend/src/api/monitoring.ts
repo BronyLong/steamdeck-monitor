@@ -23,7 +23,7 @@ export type MetricUnit = "%" | "degC" | "MHz" | "MiB/s" | "s";
 
 export interface HealthResponse {
     status: "ok";
-    source: "demo";
+    source: "linux";
 }
 
 export interface MetricsResponse {
@@ -34,7 +34,7 @@ export interface CurrentMeasurement {
     sequence: number;
     measured_at: string;
     elapsed_s: number;
-    source: "demo";
+    source: "linux";
     raw: RawMetrics;
     processed: ProcessedMetrics;
     quality: Record<MetricCode, QualityStatus>;

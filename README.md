@@ -62,6 +62,8 @@ npm run dev
 
 ## Запуск на SteamDeck
 
+Из корня проекта после установки зависимостей:
+
 ```bash
 bash -c 'source "$HOME/.nvm/nvm.sh" && nvm use 22 && { backend/.venv/bin/python -m uvicorn main:app --app-dir backend --host localhost --port 8000 & pid=$!; trap "kill $pid 2>/dev/null" EXIT; cd frontend && npm run dev -- --host 0.0.0.0 --port 5173 --strictPort; }'
 ```
